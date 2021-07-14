@@ -23,3 +23,12 @@ This was an exploratory data analysis project using a Covid 19 Vaccination datas
 6. Boston Housing Statistical Data Analysis (pandas, seaborn, matplotlib, scipy, statsmodels)
 
 Basic data analysis with a focus on data visualization with the addition of a far more intresting statistical analysis. Performed statistical analyses such as using levene tests to determine equality of variance, T-tests to compare sample means, ANOVA to compare sample means from more than two groups, and using linear regression models (OLS) to make predictions on dependant variables.
+
+7. Student Test Scores
+
+Statistical and exploratory analyses of student test scores involving data visualization, ANOVA
+tests, chi-squared tests, simple linear regression, and logistic regression
+
+8. Hate Speech Detection Model
+
+Predicted the probability of social media comments being labeled as hate speech in a labeled dataset using logistic regression and NLP fundamentals such as tokenization, stemming, and vectorization.
