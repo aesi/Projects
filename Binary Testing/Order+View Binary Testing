@@ -1,0 +1,98 @@
+--Reformat the final_assignments_qa to look like the final_assignments table, filling in any missing values with a placeholder of the appropriate data type.
+
+SELECT f.item_id
+	,i.test_assignment
+	,i.test_number
+	,i.test_start_date
+FROM dsv1069.final_assignments_qa f
+LEFT JOIN dsv1069.item_test_assignments i ON f.item_id = i.item_id
+ORDER BY test_number ASC
+	,test_start_date ASC
+
+-- Use this table to 
+-- compute view_binary for the 30 day window after the test_start_date
+-- for the test named item_test_2
+SELECT final_view.item_id
+	,final_view.test_assignment
+	,final_view.test_number
+	,MAX(CASE 
+			WHEN (
+					view_date > test_start_date
+					AND DATE_PART('day', view_date - test_start_date) <= 30
+					)
+				THEN 1
+			ELSE 0
+			END) AS view_binary
+FROM (
+	SELECT f.*
+		,DATE (events.event_time) AS view_date
+	FROM dsv1069.final_assignments f
+	LEFT JOIN (
+		SELECT event_time
+			,CASE 
+				WHEN parameter_name = 'item_id'
+					THEN CAST(parameter_value AS INT)
+				ELSE NULL
+				END AS item_id
+		FROM dsv1069.events
+		WHERE event_name = 'view_item'
+		) AS events ON f.item_id = events.item_id
+	WHERE test_number = 'item_test_2'
+	) AS final_view
+GROUP BY final_view.item_id
+	,final_view.test_assignment
+	,final_view.test_number
+  
+  -- Returns first 100 rows from dsv1069.final_assignments
+SELECT f.item_id
+	,f.test_assignment
+	,f.test_number
+	,f.test_start_date
+	,o.created_at
+	,MAX(CASE 
+			WHEN o.created_at >= i.test_start_date
+				AND o.created_at - f.test_start_date >= '30 days'
+				THEN 1
+			ELSE 0
+			END) AS orders_binary_30d
+FROM dsv1069.final_assignments f
+LEFT JOIN dsv1069.item_test_assignments i ON f.item_id = i.item_id
+JOIN dsv1069.orders o ON i.item_id = o.user_id
+WHERE f.test_number = 'item_test_2'
+GROUP BY f.item_id
+	,f.test_assignment
+	,f.test_number
+	,f.test_start_date
+	,o.created_at
+	,i.test_start_date
+ORDER BY o.created_at DESC
+
+--Use the https://thumbtack.github.io/abba/demo/abba.html to compute the lifts in metrics and the p-values for the binary metrics ( 30 day order binary and 30 day view binary) using a interval 95% confidence. 
+SELECT test_assignment
+	,test_number
+	,COUNT(item_id) AS item_count
+	,SUM(binary_30d) AS binary_30d
+FROM (
+	SELECT final_assignments.item_id AS item_id
+		,test_assignment
+		,test_number
+		,test_start_date
+		,MAX((
+				CASE 
+					WHEN DATE (event_time) - DATE (test_start_date) BETWEEN 0
+							AND 30
+						THEN 1
+					ELSE 0
+					END
+				)) AS binary_30d
+	FROM dsv1069.final_assignments
+	LEFT JOIN dsv1069.view_item_events ON final_assignments.item_id = view_item_events.item_id
+	WHERE test_number = 'item_test_2'
+	GROUP BY final_assignments.item_id
+		,test_assignment
+		,test_number
+		,test_start_date
+	) AS view_binary
+GROUP BY test_assignment
+	,test_number
+	,test_start_date
