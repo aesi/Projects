@@ -26,8 +26,7 @@ Basic data analysis with a focus on data visualization with the addition of a fa
 
 7. Student Test Scores
 
-Statistical and exploratory analyses of student test scores involving data visualization, ANOVA
-tests, chi-squared tests, simple linear regression, and logistic regression
+Statistical and exploratory analyses of student test scores involving data visualization, ANOVA tests, chi-squared tests, simple linear regression, and logistic regression.
 
 8. Hate Speech Detection Model
 
