@@ -31,3 +31,7 @@ Statistical and exploratory analyses of student test scores involving data visua
 8. Hate Speech Detection Model
 
 Predicted the probability of social media comments being labeled as hate speech in a labeled dataset using logistic regression and NLP fundamentals such as tokenization, stemming, and vectorization.
+
+9. SAHIE BEA
+
+Compiled, cleaned, and manipulated data across five years from the US Census Bureau and the Bureau of Economic Analysis to create visualizations in Tableau depicting relationships between population, income, and insurance rates.
