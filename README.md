@@ -37,5 +37,5 @@ Predicted the probability of social media comments being labeled as hate speech 
 Compiled, cleaned, and manipulated data across five years from the US Census Bureau and the Bureau of Economic Analysis to create visualizations in Tableau depicting relationships between population, income, and insurance rates.
 
 10. Reddit Sentiment Analysis Web App
-11. 
+
 Created an NLP ML model to perform sentiment analysis on any given user's social media comments and then uses conditional logic to compute an aggregate score in regards to the analysis for the respective user. Input strings were encoded using BERT which were then passed into a neural network and then optimized for validation accuracy. Weightings for the model were saved for the creation of the Flask app. The app was pushed to Docker Hub and then to Google Cloud Platform's Artifact Registry which allowed for the full deployment of the web app through Google Cloud Run.
